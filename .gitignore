@@ -1,0 +1,18 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Pytest
+.pytest_cache/
+
+# Playwright
+test-results/
+
+# Reports
+reports/*.html
+
+# Screenshots
+screenshots/*
