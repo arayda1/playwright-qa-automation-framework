@@ -1,22 +1,26 @@
 import logging
+import os
 
 
 def get_logger():
 
-    logger = logging.getLogger("QA_Framework")
+    logger = logging.getLogger("PlaywrightFramework")
 
     if not logger.handlers:
 
-        handler = logging.StreamHandler()
+        logger.setLevel(logging.INFO)
+
+        console_handler = logging.StreamHandler()
 
         formatter = logging.Formatter(
             "%(asctime)s - %(levelname)s - %(message)s"
         )
 
-        handler.setFormatter(formatter)
+        console_handler.setFormatter(formatter)
 
-        logger.addHandler(handler)
-
-        logger.setLevel(logging.INFO)
+        logger.addHandler(console_handler)
 
     return logger
+
+
+logger = get_logger()

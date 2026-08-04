@@ -1,32 +1,45 @@
-from pages.login_page import LoginPage
+import pytest
 from playwright.sync_api import expect
-from utils.logger import get_logger
+
+from pages.login_page import LoginPage
+from utils.data_reader import load_test_data
+from utils.logger import logger
 from utils.screenshot import take_screenshot
-
-
-logger = get_logger()
 
 
 def test_successful_login(page):
 
-    logger.info("Starting login test")
+    logger.info("Starting successful login test")
+
+    data = load_test_data()
 
     login_page = LoginPage(page)
 
-    login_page.login(
-        "standard_user",
-        "secret_sauce"
-    )
+    try:
+        logger.info("Opening login page")
 
-    logger.info("User logged in successfully")
+        login_page.login(
+            data["valid_user"]["username"],
+            data["valid_user"]["password"]
+        )
 
-    expect(page).to_have_url(
-        "https://www.saucedemo.com/inventory.html"
-    )
+        logger.info("Checking successful login")
 
-    take_screenshot(
-        page,
-        "successful_login"
-    )
+        expect(page).to_have_url(
+            "https://www.saucedemo.com/inventory.html"
+        )
 
-    logger.info("Login test completed")
+        logger.info("Login test passed successfully")
+
+    except Exception as error:
+
+        logger.error(
+            f"Login test failed: {error}"
+        )
+
+        take_screenshot(
+            page,
+            "login_failure"
+        )
+
+        raise error
